@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<head>
+    <title>Catalogue</title>
+    <style>
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            color: #ad277e;
+            margin-bottom: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #de78b7;
+            color: white;
+            font-size: 16px;
+        }
+
+        td {
+            font-size: 14px;
+            color: #555;
+        }
+
+        button {
+            padding: 8px 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        img {
+            width: 60px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        /* Responsive styles */
+        @media screen and (max-width: 768px) {
+            th, td {
+                padding: 10px;
+                font-size: 12px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            img {
+                width: 50px;
+                height: 75px;
+            }
+
+            button {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>CATALOGUE</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>BOOK COVER</th>
+                <th>BOOK NAME</th>
+                <th>AUTHOR</th>
+                <th>PUBLISHER</th>
+                <th>PRICE</th>
+                <th>ADD TO CART</th>
+            </tr>
+        </thead>
+        <tbody id="book-list">
+            <!-- Books will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Books data with 30 books and their cover images from online sources
+        const books = [
+            { category: 'cse', name: 'Introduction to Algorithms', author: 'Thomas H. Cormen', publisher: 'MIT Press', price: '₹1200.00', image: 'https://covers.openlibrary.org/b/id/8285106-L.jpg' },
+            { category: 'cse', name: 'Clean Code', author: 'Robert C. Martin', publisher: 'Prentice Hall', price: '₹1350.00', image: 'https://covers.openlibrary.org/b/id/5007299-L.jpg' },
+            { category: 'ece', name: 'The Art of Electronics', author: 'Paul Horowitz', publisher: 'Cambridge University Press', price: '₹2000.00', image: 'https://covers.openlibrary.org/b/id/8218899-L.jpg' },
+            { category: 'mech', name: 'Fluid Mechanics', author: 'Frank M. White', publisher: 'McGraw-Hill', price: '₹1700.00', image: 'https://covers.openlibrary.org/b/id/7950330-L.jpg' },
+            { category: 'civil', name: 'Construction Planning and Scheduling', author: 'J. S. K. Sharma', publisher: 'PHI Learning', price: '₹1500.00', image: 'https://covers.openlibrary.org/b/id/10209932-L.jpg' },
+            { category: 'cse', name: 'Data Structures and Algorithms', author: 'Alfred V. Aho', publisher: 'Addison-Wesley', price: '₹1100.00', image: 'https://covers.openlibrary.org/b/id/11159028-L.jpg' },
+            { category: 'ece', name: 'Communication Systems', author: 'Simon Haykin', publisher: 'Wiley', price: '₹1300.00', image: 'https://covers.openlibrary.org/b/id/10202962-L.jpg' },
+            { category: 'mech', name: 'Engineering Mechanics', author: 'R.C. Hibbeler', publisher: 'Pearson', price: '₹1400.00', image: 'https://covers.openlibrary.org/b/id/7921953-L.jpg' },
+            { category: 'cse', name: 'Operating Systems: Three Easy Pieces', author: 'Remzi H. Arpaci-Dusseau', publisher: 'Arpaci-Dusseau Books', price: '₹1550.00', image: 'https://covers.openlibrary.org/b/id/8383585-L.jpg' },
+            { category: 'civil', name: 'Soil Mechanics', author: 'B.M. Das', publisher: 'McGraw-Hill', price: '₹950.00', image: 'https://covers.openlibrary.org/b/id/10210545-L.jpg' },
+            { category: 'mech', name: 'Thermodynamics', author: 'Y.V.C. Rao', publisher: 'Pearson', price: '₹1250.00', image: 'https://covers.openlibrary.org/b/id/10210672-L.jpg' },
+            { category: 'ece', name: 'Microelectronic Circuits', author: 'Sedra & Smith', publisher: 'Oxford', price: '₹1400.00', image: 'https://covers.openlibrary.org/b/id/10210799-L.jpg' },
+            { category: 'cse', name: 'Artificial Intelligence', author: 'Stuart Russell', publisher: 'Pearson', price: '₹1800.00', image: 'https://covers.openlibrary.org/b/id/10210823-L.jpg' },
+            { category: 'mech', name: 'Mechanical Engineering Design', author: 'J.E. Shigley', publisher: 'McGraw-Hill', price: '₹1900.00', image: 'https://covers.openlibrary.org/b/id/10210872-L.jpg' },
+            { category: 'cse', name: 'Computer Networks', author: 'James F. Kurose', publisher: 'Pearson', price: '₹1250.00', image: 'https://covers.openlibrary.org/b/id/10210923-L.jpg' },
+            { category: 'civil', name: 'Building Construction', author: 'Sushil Kumar', publisher: 'Standard Publishers', price: '₹1350.00', image: 'https://covers.openlibrary.org/b/id/10210953-L.jpg' },
+            { category: 'cse', name: 'Database Management Systems', author: 'Raghu Ramakrishnan', publisher: 'McGraw-Hill', price: '₹1500.00', image: 'https://covers.openlibrary.org/b/id/10210972-L.jpg' },
+            { category: 'mech', name: 'Dynamics of Machinery', author: 'A.G. Ambekar', publisher: 'PHI Learning', price: '₹1200.00', image: 'https://covers.openlibrary.org/b/id/10211021-L.jpg' },
+            { category: 'cse', name: 'Introduction to the Theory of Computation', author: 'Michael Sipser', publisher: 'Cengage', price: '₹1300.00', image: 'https://covers.openlibrary.org/b/id/10211037-L.jpg' },
+            { category: 'ece', name: 'Signals and Systems', author: 'Alan V. Oppenheim', publisher: 'Pearson', price: '₹1400.00', image: 'https://covers.openlibrary.org/b/id/10211060-L.jpg' },
+            { category: 'mech', name: 'Heat Transfer', author: 'J.P. Holman', publisher: 'McGraw-Hill', price: '₹1600.00', image: 'https://covers.openlibrary.org/b/id/10211081-L.jpg' },
+            { category: 'civil', name: 'Design of Reinforced Concrete', author: 'N. Subramanian', publisher: 'Oxford', price: '₹1200.00', image: 'https://covers.openlibrary.org/b/id/10211097-L.jpg' },
+            { category: 'mech', name: 'Fluid Mechanics and Hydraulic Machines', author: 'R.K. Bansal', publisher: 'Laxmi Publications', price: '₹1100.00', image: 'https://covers.openlibrary.org/b/id/10211103-L.jpg' },
+            { category: 'cse', name: 'Discrete Mathematics', author: 'Kenneth H. Rosen', publisher: 'McGraw-Hill', price: '₹1200.00', image: 'https://covers.openlibrary.org/b/id/10211137-L.jpg' },
+            { category: 'cse', name: 'Linear Algebra', author: 'Gilbert Strang', publisher: 'Cengage', price: '₹1100.00', image: 'https://covers.openlibrary.org/b/id/10211158-L.jpg' },
+            { category: 'mech', name: 'Mechanical Vibrations', author: 'S.S. Rao', publisher: 'Pearson', price: '₹1300.00', image: 'https://covers.openlibrary.org/b/id/10211183-L.jpg' },
+            { category: 'civil', name: 'Advanced Reinforced Concrete Design', author: 'P.C. Varghese', publisher: 'PHI Learning', price: '₹1400.00', image: 'https://covers.openlibrary.org/b/id/10211205-L.jpg' },
+            { category: 'cse', name: 'Software Engineering', author: 'Ian Sommerville', publisher: 'Addison-Wesley', price: '₹1500.00', image: 'https://covers.openlibrary.org/b/id/10211234-L.jpg' },
+            { category: 'mech', name: 'Strength of Materials', author: 'R.K. Bansal', publisher: 'Laxmi Publications', price: '₹1300.00', image: 'https://covers.openlibrary.org/b/id/10211250-L.jpg' },
+        ];
+
+        // Function to display books based on the selected category
+        function displayBooks(category) {
+            const bookList = document.getElementById('book-list');
+            bookList.innerHTML = ''; // Clear existing books
+
+            const filteredBooks = category === 'all' || !category 
+                ? books // Show all books if category is 'all' or not provided
+                : books.filter(book => book.category === category);
+
+            if (filteredBooks.length === 0) {
+                bookList.innerHTML = '<tr><td colspan="6">No books found for this category.</td></tr>';
+            } else {
+                filteredBooks.forEach(book => {
+                    const row = `
+                        <tr>
+                            <td><img src="${book.image}" alt="${book.name}"></td>
+                            <td>${book.name}</td>
+                            <td>${book.author}</td>
+                            <td>${book.publisher}</td>
+                            <td>${book.price}</td>
+                            <td><button onclick="addToCart('${book.name}', '${book.author}', '${book.publisher}', '${book.price}', '${book.image}')">Add to Cart</button></td>
+                        </tr>`;
+                    bookList.innerHTML += row;
+                });
+            }
+        }
+
+        // Function to add books to the cart
+        function addToCart(bookName, author, publisher, price, image) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            cart.push({ name: bookName, author: author, publisher: publisher, price: price, image: image });
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(bookName + " has been added to your cart!");
+        }
+
+        // Check if a category is passed in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category');
+        displayBooks(category || 'all'); // Display books for the selected category or all if no category is provided
+    </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<head>
+    <title>Your Cart</title>
+    <style>
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ad277e;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #ffffff;
+            border-radius: 8px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: #555;
+        }
+
+        th {
+            background-color: #de78b7;
+            color: white;
+            font-weight: bold;
+        }
+
+        td {
+            background-color: #f9f9f9;
+        }
+
+        button {
+            padding: 8px 12px;
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #c82333;
+        }
+
+        img {
+            width: 60px;
+            height: 90px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .empty-cart-message {
+            text-align: center;
+            font-size: 18px;
+            color: #dc3545;
+            margin-top: 20px;
+        }
+
+        .total-amount {
+            text-align: right;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 30px;
+            color: #333;
+        }
+
+        @media screen and (max-width: 768px) {
+            th, td {
+                padding: 10px;
+                font-size: 12px;
+            }
+
+            button {
+                padding: 6px 10px;
+                font-size: 12px;
+                cursor: pointer;
+            }
+
+            img {
+                width: 50px;
+                height: 75px;
+            }
+
+            .total-amount {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>MY CART</h1>
+
+    <table id="cart-table">
+        <thead>
+            <tr>
+                <th>BOOK COVER</th>
+                <th>BOOK NAME</th>
+                <th>AUTHOR</th>
+                <th>PUBLISHER</th>
+                <th>PRICE</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody id="cart-items">
+        </tbody>
+    </table>
+
+    <div id="empty-cart-message" class="empty-cart-message"></div>
+
+    <div id="total-amount" class="total-amount">
+        Total Amount: ₹<span id="total-price">0.00</span>
+    </div>
+
+    <button>PROCEED TO PAY</button>
+
+    <script>
+        function displayCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];  
+            const cartItems = document.getElementById('cart-items');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+            const totalPrice = document.getElementById('total-price');
+            cartItems.innerHTML = ''; 
+
+            if (cart.length === 0) {
+                emptyCartMessage.textContent = 'Cart is empty. Please add items to the cart.';
+                totalPrice.textContent = '0.00';
+                return;
+            } else {
+                emptyCartMessage.textContent = '';  
+            }
+
+            let totalAmount = 0; 
+
+            cart.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><img src="${item.image}" alt="${item.name}"></td>
+                    <td>${item.name}</td>
+                    <td>${item.author}</td>
+                    <td>${item.publisher}</td>
+                    <td>${item.price}</td>
+                    <td><button onclick="removeFromCart('${item.name}')">Remove</button></td>
+                `;
+                cartItems.appendChild(row);
+                const price = parseFloat(item.price.replace('₹', '')); 
+                totalAmount += price;
+            });
+            totalPrice.textContent = totalAmount.toFixed(2); 
+        }
+
+        function removeFromCart(bookName) {
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];  
+            cart = cart.filter(item => item.name !== bookName); 
+            localStorage.setItem('cart', JSON.stringify(cart));  
+            displayCart();  
+        }
+
+        displayCart();
+    </script>
+</body>
+</html>
